@@ -1,0 +1,612 @@
+
+Solution
+1.
+clc;
+clear;
+
+a1=imread("K:/Sem2/dip/tulsi_c.png");
+a=rgb2gray(a1)
+[row col]=size(a);
+b=255-a;
+count=zeros(1,256)
+count1=zeros(1,256)
+for x=1:row
+    for y=1:col
+        temp=a(x,y);
+        count(temp+1)=count(temp+1)+1;
+        temp=b(x,y);
+        count1(temp+1)=count(temp+1)+1;
+    end     
+end
+
+subplot(2,1,1)
+bar(count,0.01);
+subplot(2,1,2)
+bar(count1,0.01); 
+p = [a b]
+imshow(p)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2.
+a1=imread("K:/Sem2/dip/tulsi_c.png");
+a=rgb2gray(a1)
+[row col]=size(a);
+b=a
+th=input("enter the value of threshold  ")
+count=zeros(1,256)
+count1=zeros(1,256)
+for x=1:row
+    for y=1:col
+        if a(x,y)>th
+            b(x,y)=a(x,y)
+        else
+            b(x,y)=0
+        end
+        
+        
+    end     
+end
+
+p = [a b]
+imshow(p)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3)
+ 
+Slope = y2-y1/x2-x1
+L=s1-0/r1-0
+M=s2-s1/r2-r1
+N=255-s2/255-r2  
+Note: l<1 , n<1 & m>1 for this r1>s1 & s2>r2
+Y=mx+c
+S = l*r + 0 	 0<=r<r1
+S= m*(r-r1)+s1   r1<=r<r2
+S= n*(r1-r2)+s2   r2<=r<(L-1)
+
+clc;
+clear;
+
+a=rgb2gray(a1)
+[row col]=size(a);
+b=a
+disp("note: s1<r1 and s2>r2")
+r1 =input("enter the value of r1  ")  
+s1 =input("enter the value of s1  ")
+r2 =input("enter the value of r2  ")
+s2=input("enter the value of s2  ")
+
+count=zeros(1,256)
+count1=zeros(1,256)
+
+l=s1/r1
+m=(s2-s1)/(r2-r1)
+n=(255-s2)/(255-r2)
+t=0
+for x=1:row
+    for y=1:col
+        r=a(x,y)
+         if r<r1
+           t=l*r
+       elseif r>r2
+           t=n*(r-r2)+s2
+       else
+           t=m*(r-r1)+s1
+       end
+       if t>255
+           t=255
+       end
+       b(x,y)=t
+       
+       count(r+1)=count(r+1)+1
+       count1(t+1)=count1(t+1)+1
+              
+    end     
+end
+
+subplot(2,1,1)
+bar(count,0.01);
+subplot(2,1,2)
+bar(count1,0.01); 
+
+p = [a b]
+imshow(p)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4)
+clc;
+clear;
+
+a1=imread("lena256color.bmp");
+a=rgb2gray(a1);
+[row col]=size(a);
+b=a
+disp("note: s1<r1 and s2>r2");
+r1 =input("enter the value of r1  ");  
+s1 =input("enter the value of s1  ");
+r2 =input("enter the value of r2  ");
+s2=input("enter the value of s2  ");
+
+count=zeros(1,256);
+count1=zeros(1,256);
+
+l=s1/r1;
+m=(s2-s1)/(r2-r1);
+n=(255-s2)/(255-r2);
+t=0;
+t=double(t);
+for x=1:row
+    for y=1:col
+        r=a(x,y);
+        r=double(r);
+         if r<r1;
+           t=l*r;
+       elseif r>r2;
+           t=n*(r-r2)+s2;
+       else
+           t=m*(r-r1)+s1;
+       end
+       if t>255
+           t=255;
+       end
+       b(x,y)=t;
+       
+       count(r+1)=count(r+1)+1;
+       count1(t+1)=count1(t+1)+1;
+              
+    end     
+end
+
+subplot(2,1,1);
+bar(count,0.01);
+subplot(2,1,2);
+bar(count1,0.01); 
+
+p = [a b];
+imshow(p)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5) without background grey level slicing
+clc;
+clear;
+a1=imread("lena256color.bmp");
+
+a=rgb2gray(a1)
+[row col]=size(a)
+b=a
+r1=80
+r2=220
+s=30
+t=0
+for x=1:row
+    for y=1:col
+        r=a(x,y)
+         if r<r1
+           t=s
+       elseif r>r2
+           t=s
+       else
+           t=255
+       end
+       b(x,y)=t
+              
+    end     
+end
+ 
+p = [a b]
+imshow(p)
+
+withbackground
+
+clc;
+clear;
+a1=imread("lena256color.bmp");
+
+a=rgb2gray(a1)
+[row col]=size(a)
+b=a
+r1=50
+r2=80
+s=10
+t=0
+for x=1:row
+    for y=1:col
+        r=a(x,y)
+         if r<r1
+           t=r
+       elseif r>r2
+           t=r
+       else
+           t=255
+       end
+       b(x,y)=t
+              
+    end     
+end
+ 
+p = [a b]
+imshow(p)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7th practical 
+clc;
+clear;
+a1=imread("img/bright.png");
+b1=imread("img/dark.png");
+c1=imread("img/cat256.bmp");
+d1=imread("img/low_con.png");
+//c1=rgb2gray(c1)
+d1=rgb2gray(d1)
+
+b=double(b1);
+a=b+130
+c=double(c1);
+d=double(d1);
+
+[row col] = size(a);
+
+count1 = zeros(1,256);
+count2 = zeros(1,256);
+count3 = zeros(1,256);
+count4 = zeros(1,256);
+
+for x=1:row
+    for y=1:col
+        temp1 = a(x,y)+1;
+        temp2 = b(x,y)+1;
+        temp3 = c(x,y)+1;
+        temp4 = d(x,y)+1;
+        count1(temp1) = count1(temp1)+1;
+        count2(temp2) = count2(temp2)+1;
+        count3(temp3) = count3(temp3)+1;
+        count4(temp4) = count4(temp4)+1;
+    end
+end 
+
+subplot(4,1,1)
+bar(count1,0.01)
+subplot(4,1,2)
+bar(count2,0.01)
+subplot(4,1,3)
+bar(count3,0.01)
+subplot(4,1,4)
+bar(count4,0.01)
+
+p= [uint8(a) uint8(b) ;uint8(c) uint8(d)]
+imshow(p)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+8th practical
+clc;
+clear;
+a=imread("cat256.bmp");
+a=double(a);
+[row col]= size(a);
+
+count = zeros(1,256);
+
+for x=1:row
+    for y=1:col
+        t=a(x,y);
+        count(t+1)=count(t+1)+1;
+    end
+end
+
+subplot(3,1,1)
+bar(count,0.01)
+
+pdf=count/(row*col);
+cdf=zeros(1,256);
+
+cdf(1)=pdf(1);
+for x=2:256
+    cdf(x)=pdf(x)+cdf(x-1);
+end
+
+sk=round(cdf*255);
+
+for x=1:row
+    for y=1:col
+        t=a(x,y)+1;
+        p(x,y)=sk(t);
+    end
+end
+
+count2 = zeros(1,256);
+
+for x=1:row
+    for y=1:col
+        t=p(x,y);
+        count2(t+1)=count2(t+1)+1;
+    end
+end
+
+subplot(3,1,2)
+bar(count2,0.01)
+
+pdf2=count2/(row*col)
+cdf2=zeros(1,256)
+cdf(1)=pdf(1)
+for x=2:256
+    cdf(x)=pdf(x)+cdf(x-1);
+end
+
+sk2=round(cdf*255);
+
+for x=1:row
+    for y=1:col
+        t1=p(x,y)+1
+        p1(x,y)=sk2(t1);
+    end
+end
+
+count3 = zeros(1,256);
+
+for x=1:row
+    for y=1:col
+        t=p1(x,y);
+        count3(t+1)=count3(t+1)+1;
+    end
+end
+
+subplot(3,1,3)
+bar(count3,0.01)
+
+o=[uint8(a) uint8(p) uint8(p1)]
+imshow(o)
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+9th practical
+clc;
+clear;
+a2=imread("cat256.bmp");
+a1=imnoise(a2,"speckle")
+a=double(a1);
+[row col]= size(a);
+m=[1,1,1;1,1,1;1,1,1]
+wm=[1,2,1;2,4,2;1,2,1]
+p=a
+q=a
+r=a
+for x=2:row-1
+    for y=2:col-1
+        t1=a(x-1,y-1)*m(1,1)+a(x-1,y)*m(1,2)+a(x-1,y+1)*m(1,3)+a(x,y-1)*m(2,1)+a(x,y)*m(2,2)+a(x,y+1)*m(2,3)+a(x+1,y-1)*m(3,1)+a(x+1,y)*m(3,2)+a(x+1,y+1)*m(3,3);
+        t=round(t1/9);
+        p(x,y)=t
+        t2=a(x-1,y-1)*wm(1,1)+a(x-1,y)*wm(1,2)+a(x-1,y+1)*wm(1,3)+a(x,y-1)*wm(2,1)+a(x,y)*wm(2,2)+a(x,y+1)*wm(2,3)+a(x+1,y-1)*wm(3,1)+a(x+1,y)*wm(3,2)+a(x+1,y+1)*wm(3,3);
+        t3=round(t2/16);
+        q(x,y)=t3
+        t4=[a(x-1,y-1),a(x-1,y),a(x-1,y+1),a(x,y-1),a(x,y),a(x,y+1),a(x+1,y-1),a(x+1,y),a(x+1,y+1)];
+        t5=gsort(t4)
+        r(x,y)=t5(5);
+        
+    end
+end
+
+o=[uint8(a) uint8(p) uint8(q) uint8(r)]
+
+imshow(o)
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Practical 10
+clc;
+clear;
+a1=imread("lena256color.bmp");
+a2=rgb2gray(a1)
+a=double(a2);
+[row col]= size(a);
+m=[0,-1,0;-1,4,-1;0,-1,0]
+wm=[-1,-1,-1;-1,8,-1;-1,-1,-1]
+q=a
+p=a
+r=a
+for x=2:row-1
+    for y=2:col-1
+        t=a(x-1,y-1)*m(1,1)+a(x-1,y)*m(1,2)+a(x-1,y+1)*m(1,3)+a(x,y-1)*m(2,1)+a(x,y)*m(2,2)+a(x,y+1)*m(2,3)+a(x+1,y-1)*m(3,1)+a(x+1,y)*m(3,2)+a(x+1,y+1)*m(3,3);
+        p(x,y)=t
+        t2=a(x-1,y-1)*wm(1,1)+a(x-1,y)*wm(1,2)+a(x-1,y+1)*wm(1,3)+a(x,y-1)*wm(2,1)+a(x,y)*wm(2,2)+a(x,y+1)*wm(2,3)+a(x+1,y-1)*wm(3,1)+a(x+1,y)*wm(3,2)+a(x+1,y+1)*wm(3,3);
+        q(x,y)=t2
+        t3=abs(t)+abs(t2)
+        r(x,y)=t3/2
+        
+    end
+end
+
+o=[uint8(a) uint8(p) uint8(q) uint8(r)]
+
+imshow(o)
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Practical 12A
+clc;
+clear;
+a1=imread("lena256color.bmp");
+b=rgb2ycbcr(a1)
+p1=b(:,:,1)
+p2=b(:,:,2)
+p3=b(:,:,3)
+
+[row col]= size(p1);
+m=[1,1,1;1,1,1;1,1,1]
+
+a=double(round(p2*255))
+p=a
+for x=2:row-1
+    for y=2:col-1
+        t1=a(x-1,y-1)*m(1,1)+a(x-1,y)*m(1,2)+a(x-1,y+1)*m(1,3)+a(x,y-1)*m(2,1)+a(x,y)*m(2,2)+a(x,y+1)*m(2,3)+a(x+1,y-1)*m(3,1)+a(x+1,y)*m(3,2)+a(x+1,y+1)*m(3,3);
+        t=round(t1/9);
+        p(x,y)=t/255
+         
+    end
+end
+
+b(:,:,2)=p
+op1=ycbcr2rgb(b)
+imshow([op1])
+
+
+
+`````````````````````````````````````````````````````````````````````````````````````````````````````````
+practical 12 b
+edge detection 
+clc;
+clear;
+a1=imread("lena256color.bmp");
+b=rgb2ycbcr(a1)
+p1=b(:,:,1)
+p2=b(:,:,2)
+p3=b(:,:,3)
+
+[row col]= size(p1);
+m=[-1,-1,-1;-1,8,-1;-1,-1,-1]
+wm=[-1,-1,-1;0,0,0;1,1,1]
+
+a=double(p2*255)
+p=a
+for x=2:row-1
+    for y=2:col-1
+        t1=a(x-1,y-1)*m(1,1)+a(x-1,y)*m(1,2)+a(x-1,y+1)*m(1,3)+a(x,y-1)*m(2,1)+a(x,y)*m(2,2)+a(x,y+1)*m(2,3)+a(x+1,y-1)*m(3,1)+a(x+1,y)*m(3,2)+a(x+1,y+1)*m(3,3);
+        t2=a(x-1,y-1)*wm(1,1)+a(x-1,y)*wm(1,2)+a(x-1,y+1)*wm(1,3)+a(x,y-1)*wm(2,1)+a(x,y)*wm(2,2)+a(x,y+1)*wm(2,3)+a(x+1,y-1)*wm(3,1)+a(x+1,y)*wm(3,2)+a(x+1,y+1)*wm(3,3);
+        t3=abs(t1)+abs(t2)
+        
+        p(x,y)=t3/310
+         
+    end
+end
+
+b(:,:,2)=p
+op1=ycbcr2rgb(b)
+
+imshow([a a/255 p])
+imshow(op1)
+`````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+practical12 c
+clc;
+clear;
+
+a1=imread('lena256color.bmp');
+a2=rgb2hsv(a1);
+
+S=a2(:,:,1);
+H=a2(:,:,2);
+V=a2(:,:,3);
+//t=[S H V];
+//imshow(t)
+
+[row col]=size(V);
+a=double(V*255);
+
+count=zeros(1,256)
+
+for x=1:row
+    for y=1:col
+        t=a(x,y)+1
+        count(t)=count(t)+1
+    end
+    
+end
+
+pdf = count/(row*col)
+cdf=zeros(1,256)
+cdf(1)=pdf(1)
+for x=2:256
+    cdf(x)=pdf(x)+cdf(x-1)
+end
+
+sk=round(cdf*255)
+
+p=a;
+
+for x=1:row
+    for y=1:col
+        t=a(x,y)+1
+        p(x,y)=sk(t)
+    end
+    
+end
+
+a2(:,:,3)=p/255;
+a3=hsv2rgb(a2);
+imshow(a3);
+
+`````````````````````````````````````````````````````````````````````````````````````````````````````````````
+Practical 12 d
+clc;
+clear;
+
+a1=imread('lena256color.bmp');
+a2=rgb2hsv(a1);
+
+S=a2(:,:,1);
+H=a2(:,:,2);
+V=a2(:,:,3);
+
+a4=imnoise(V,"gaussian")
+[row col]=size(V);
+a=double(a4*255);
+m=[1,1,1;1,1,1;1,1,1]
+for x=2:row-1
+    for y=2:col-1
+        t=[a(x-1,y-1)*m(1,1),a(x-1,y)*m(1,2),a(x-1,y+1)*m(1,3),a(x,y-1)*m(2,1),a(x,y)*m(2,2),a(x,y+1)*m(2,3),a(x+1,y-1)*m(3,1),a(x+1,y)*m(3,2),a(x+1,y+1)*m(3,3)]
+        t1=gsort(t)
+        a(x,y)=t1(5)
+    end
+end
+
+a7=a2
+a2(:,:,3)=a4;
+a5=a2
+a2(:,:,3)=a/255;
+a3=hsv2rgb(a2);
+a6=hsv2rgb(a5)
+a7=hsv2rgb(a7)
+imshow([a7 a6 a3]);
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+17th 
+clc;
+clear;
+a1=imread("cat256.bmp");
+
+[row col] = size(a1);
+a=double(a1)
+
+x=input("enter the value of x")
+y=input("enter the value of y")
+
+temp=zeros(8,8)
+
+for i=x:x+7
+    for j=y:y+7
+        temp(i-(x-1),j-(y-1))=a(i,j)
+        end
+end
+
+dc=dct(temp)
+idc=idct(dc)
+
+disp(temp-idc)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+
+
